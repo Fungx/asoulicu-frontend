@@ -17,7 +17,7 @@
                 <!-- tags -->
                 <hr>
                 <div>
-                    <a href="#" v-for="(tag,index) in tags" :key="index">{{tag}}&nbsp;</a>
+                    <a href="#" v-for="(tag,index) in tags" :key="index" style="font-size: small">{{tag}}&nbsp;</a>
                 </div>
             </b-card-body>
         </b-card>
