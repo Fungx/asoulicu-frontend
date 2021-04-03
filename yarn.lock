@@ -5209,6 +5209,11 @@ lodash.defaultsdeep@^4.6.1:
   resolved "https://registry.npm.taobao.org/lodash.defaultsdeep/download/lodash.defaultsdeep-4.6.1.tgz#512e9bd721d272d94e3d3a63653fa17516741ca6"
   integrity sha1-US6b1yHSctlOPTpjZT+hdRZ0HKY=
 
+lodash.flowright@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.flowright/-/lodash.flowright-3.5.0.tgz#2b5fff399716d7e7dc5724fe9349f67065184d67"
+  integrity sha1-K1//OZcW1+fcVyT+k0n2cGUYTWc=
+
 lodash.kebabcase@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npm.taobao.org/lodash.kebabcase/download/lodash.kebabcase-4.1.1.tgz#8489b1cb0d29ff88195cceca448ff6d6cc295c36"
@@ -5223,6 +5228,11 @@ lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.npm.taobao.org/lodash.memoize/download/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
 lodash.transform@^4.6.0:
   version "4.6.0"
@@ -8227,6 +8237,14 @@ vue-loader@^15.9.2:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-scrollview@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/vue-scrollview/-/vue-scrollview-3.0.1.tgz#2bbb049168d53d320f29e62c831db134376f9319"
+  integrity sha512-hNdbZ1HC+o2FrYfISNv+YtTMGW99xz9sLhnyX+ROo4vJoMogpCFrjrB1nTuxkt1DmBO+cPv0ifouPvvQssYbHQ==
+  dependencies:
+    lodash.flowright "^3.5.0"
+    lodash.throttle "^4.1.1"
 
 vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
   version "4.1.3"

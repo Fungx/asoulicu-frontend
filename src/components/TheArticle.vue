@@ -1,20 +1,23 @@
 <template xmlns:v="http://www.w3.org/1999/xhtml">
-    <div class="page-content">
+    <scroll-view>
         <b-container v-if="articles">
-            <b-row cols-lg="4" cols-sm="1">
-                <div v-for="item in articles" :key="item.id" style="height: 100%;">
-                    <b-col >
-                        <ArticleCard class="article-card" v-bind="item"></ArticleCard>
-                    </b-col>
-                </div>
-            </b-row>
+            <template>
+                <b-row cols-lg="4" cols-sm="1">
+                    <div v-for="item in articles" :key="item.id">
+                        <b-col>
+                            <ArticleCard class="article-card" v-bind="item" :key="item._id"></ArticleCard>
+                        </b-col>
+                    </div>
+                </b-row>
+            </template>
         </b-container>
-    </div>
+    </scroll-view>
 </template>
 
 <script>
     import ArticleCard from './ArticleCard.vue'
     import {listArticles} from "@/api/api";
+    import {$scrollview} from 'vue-scrollview'
 
     export default {
         name: 'TheArticle',
@@ -25,26 +28,36 @@
             return {
                 articles: [],
                 pageNum: 0,
-                pageSize: 32,
+                pageSize: 4,
                 hasNext: true
             }
         },
         methods: {
-            fetchArticles: function () {
+            fetchMoreArticles: function () {
                 if (this.hasNext) {
                     listArticles(this.pageNum, this.pageSize).then(res => {
                         if (res.status == 200) {
-                            this.articles.push.apply(this.articles,res.data.articles)
-                            console.log(this.articles)
+                            this.articles = this.articles.concat(res.data.articles)
                             this.hasNext = res.data.count >= this.pageSize
-                            this.pageNum++;
                         }
                     })
+                } else {
+                    console.debug("no more")
                 }
             }
         },
-        beforeMount: function () {
-            this.fetchArticles()
+        watch: {
+            pageNum: {
+                immediate: true,
+                handler: function () {
+                    this.fetchMoreArticles()
+                }
+            }
+        },
+        mounted() {
+            $scrollview.onLastEntered = () => {
+                this.pageNum++
+            }
         }
     }
 </script>
