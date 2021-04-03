@@ -1,7 +1,7 @@
 <template xmlns:v="http://www.w3.org/1999/xhtml">
     <scroll-view>
-        <b-container v-if="articles">
-            <template>
+        <template>
+            <b-container v-if="articles">
                 <b-row cols-lg="4" cols-sm="1">
                     <div v-for="item in articles" :key="item.id">
                         <b-col>
@@ -9,8 +9,8 @@
                         </b-col>
                     </div>
                 </b-row>
-            </template>
-        </b-container>
+            </b-container>
+        </template>
     </scroll-view>
 </template>
 
@@ -28,7 +28,7 @@
             return {
                 articles: [],
                 pageNum: 0,
-                pageSize: 4,
+                pageSize: 12,
                 hasNext: true
             }
         },
@@ -41,8 +41,6 @@
                             this.hasNext = res.data.count >= this.pageSize
                         }
                     })
-                } else {
-                    console.debug("no more")
                 }
             }
         },
@@ -56,6 +54,7 @@
         },
         mounted() {
             $scrollview.onLastEntered = () => {
+                console.log("at bottom")
                 this.pageNum++
             }
         }

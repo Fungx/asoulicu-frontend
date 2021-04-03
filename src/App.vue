@@ -46,4 +46,8 @@
     body{
         background: darkgray;
     }
+    .page-content{
+        padding-top: 3%;
+        padding-bottom: 5%;
+    }
 </style>
