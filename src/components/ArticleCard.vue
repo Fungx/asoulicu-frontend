@@ -73,7 +73,7 @@
     .text-limits {
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 5;
+        -webkit-line-clamp: 4;
         overflow: hidden;
     }
 

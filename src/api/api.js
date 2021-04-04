@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const host = 'http://localhost:8080/v'
-
+// const host = 'http://localhost:8088/v'
+const host='https://asoul.icu/v'
 // 获取所有作文
 const listArticles = (pageNum, pageSize) => {
     return axios.get(`${host}/articles`, {params: {pageNum: pageNum, pageSize: pageSize}})
