@@ -4,16 +4,16 @@
             <b-container>
                 <b-navbar-brand href="#">🥰</b-navbar-brand>
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item href="#" v-b-modal="'modal-help'">?</b-nav-item>
+                    <b-nav-item  v-b-modal="'modal-help'"><span style="color: white">?</span></b-nav-item>
                 </b-navbar-nav>
             </b-container>
         </b-navbar>
         <b-modal id="modal-help" title="帮助" ok-only size="lg">
-            <p>做了个小网站来存放一个魂儿们的小作文和定型文，因为第一次用vue所以非常简陋，以后会继续改进的。</p>
+            <p>做了个小网站来存放一个魂儿们的小作文和定型文，因为第一次用vue和fastapi所以非常简陋，以后会继续改进的。</p>
             <p>欢迎大家使用jiaranicu@outlook.com投稿和联系，如果不愿意您的作品被收录也可以联系我删除。以下是准备添加的功能</p>
             <ul>
                 <li>投稿界面</li>
-                <li>搜索</li>
+                <li>多条件搜索</li>
             </ul>
             <hr>
             <p>谢谢大家,谢谢大家</p>
@@ -32,7 +32,7 @@
             <p>呜呜呜…我的网站</p>
             <p>我不耽误大家的时间了</p>
             <p>嘤嘤</p>
-            梗来源：<a href="https://www.bilibili.com/video/BV1FN411o7nt">可爱小向晚</a>
+            梗来源：<a target="_blank" href="https://www.bilibili.com/video/BV1FN411o7nt">可爱小向晚</a>
         </b-modal>
         <div class="page-content">
             <TheArticle/>
@@ -66,7 +66,7 @@
     }
 
     .page-content {
-        padding-top: 3%;
+        padding-top: 1%;
         padding-bottom: 5%;
     }
 </style>

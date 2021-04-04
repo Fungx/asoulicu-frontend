@@ -63,7 +63,7 @@
             },
             submissionDate() {
                 let date = new Date(this.submissionTime * 1000)
-                return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+                return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
             }
         }
     }

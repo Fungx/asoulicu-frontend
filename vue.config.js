@@ -1,5 +1,14 @@
 module.exports = {
     devServer: {
-        proxy: 'https://asoul.icu'
+        hot: true,
+        host: 'localhost',
+        port: 8080,
+        open: true,
+        proxy: {
+            '/v': {
+                target: "http://localhost:8088",
+                changeOrigin: true
+            }
+        }
     }
 }
