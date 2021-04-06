@@ -1,7 +1,7 @@
 <template xmlns:v="http://www.w3.org/1999/xhtml">
     <b-container>
         <b-form-input v-on:keyup.enter="searchArticles" v-model="kw" placeholder="按标签搜索，用空格隔开"></b-form-input>
-        <b-row cols-lg="4" cols-sm="1">
+        <b-row  cols-xl="4" cols-lg="3" cols-md="2" cols-sm="1">
             <div v-for="item in articles" :key="item.id">
                 <template>
                     <b-col>
@@ -35,7 +35,7 @@
                 kw: "",
                 query: {},
                 pageNum: 0,
-                pageSize: 16,
+                pageSize: 32,
             }
         },
         methods: {

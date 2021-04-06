@@ -4,7 +4,7 @@
             <b-container>
                 <b-navbar-brand href="#">🥰</b-navbar-brand>
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item  v-b-modal="'modal-help'"><span style="color: white">?</span></b-nav-item>
+                    <b-nav-item  v-b-modal="'modal-help'"><b-icon-question-circle class="nav-icon"></b-icon-question-circle></b-nav-item>
                 </b-navbar-nav>
             </b-container>
         </b-navbar>
@@ -44,11 +44,11 @@
 
 <script>
     import TheArticle from './components/TheArticle.vue'
-
+    import {BIconQuestionCircle} from 'bootstrap-vue'
     export default {
         name: 'App',
         components: {
-            TheArticle
+            TheArticle,BIconQuestionCircle
         }
     }
 </script>
@@ -61,12 +61,11 @@
         color: #2c3e50;
     }
 
-    body {
-        background: darkgray;
-    }
-
     .page-content {
         padding-top: 1%;
         padding-bottom: 5%;
+    }
+    .nav-icon{
+        color:white;
     }
 </style>
