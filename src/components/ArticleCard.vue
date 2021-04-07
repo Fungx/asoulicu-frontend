@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-card no-body>
+        <b-card no-body class="shadow-sm">
             <b-card-body>
                 <b-card-title class="title-limits">
                     {{title}}
