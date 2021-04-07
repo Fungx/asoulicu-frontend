@@ -1,13 +1,11 @@
 <template xmlns:v="http://www.w3.org/1999/xhtml">
     <b-container>
         <b-form-input v-on:keyup.enter="searchArticles" v-model="kw" placeholder="按标签搜索，用空格隔开"></b-form-input>
-        <b-row  cols-xl="4" cols-lg="3" cols-md="2" cols-sm="1">
+        <b-row cols-xl="4" cols-lg="3" cols-md="2" cols-sm="1">
             <div v-for="item in articles" :key="item.id">
-                <template>
-                    <b-col>
-                        <ArticleCard class="article-card" v-bind="item" :key="item._id"></ArticleCard>
-                    </b-col>
-                </template>
+                <b-col>
+                    <ArticleCard class="article-card" v-bind="item" :key="item._id"></ArticleCard>
+                </b-col>
             </div>
         </b-row>
         <h3 v-if="articles.length==0">没有符合条件的结果</h3>

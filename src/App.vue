@@ -2,9 +2,16 @@
     <div id="app" class>
         <b-navbar toggleable="lg" variant="info">
             <b-container>
-                <b-navbar-brand href="#">🥰</b-navbar-brand>
+                <b-navbar-brand to="/">🥰</b-navbar-brand>
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item  v-b-modal="'modal-help'"><b-icon-question-circle class="nav-icon"></b-icon-question-circle></b-nav-item>
+                    <b-nav-item>
+                        <b-link to="/editor">
+                            <b-icon-pencil alt="编辑器" title="编辑器" class="nav-icon"></b-icon-pencil>
+                        </b-link>
+                    </b-nav-item>
+                    <b-nav-item v-b-modal="'modal-help'">
+                        <b-icon-question-circle class="nav-icon"></b-icon-question-circle>
+                    </b-nav-item>
                 </b-navbar-nav>
             </b-container>
         </b-navbar>
@@ -35,7 +42,12 @@
             梗来源：<a target="_blank" href="https://www.bilibili.com/video/BV1FN411o7nt">可爱小向晚</a>
         </b-modal>
         <div class="page-content">
-            <TheArticle/>
+            <transition name="fade">
+                <keep-alive>
+                    <router-view></router-view>
+                </keep-alive>
+
+            </transition>
         </div>
 
 
@@ -43,13 +55,13 @@
 </template>
 
 <script>
-    import TheArticle from './components/TheArticle.vue'
-    import {BIconQuestionCircle} from 'bootstrap-vue'
+    import {BIconQuestionCircle, BIconPencil} from 'bootstrap-vue'
+
     export default {
         name: 'App',
         components: {
-            TheArticle,BIconQuestionCircle
-        }
+            BIconQuestionCircle, BIconPencil
+        },
     }
 </script>
 
@@ -65,7 +77,17 @@
         padding-top: 1%;
         padding-bottom: 5%;
     }
-    .nav-icon{
-        color:white;
+
+    .nav-icon {
+        color: white;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .2s;
+    }
+
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+    {
+        opacity: 0;
     }
 </style>
