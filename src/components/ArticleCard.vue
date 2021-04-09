@@ -6,25 +6,24 @@
                     {{title}}
                 </b-card-title>
                 <b-card-sub-title>
-                    <p>{{author}} &nbsp;&nbsp;{{submissionDate}}</p>
+                    <p>{{author}} |&nbsp;{{submissionDate}}</p>
                 </b-card-sub-title>
                 <!--content-->
                 <div style="cursor: pointer">
-                    <b-card-text class="text-limits" @click="showModal">
+                    <b-card-text class="content-limits" @click="showModal">
                         {{plainContent}}
                     </b-card-text>
                 </div>
                 <!-- tags -->
                 <hr>
                 <div>
-                    <a href="#" v-for="(tag,index) in tags" :key="index" style="font-size: small">{{tag}}&nbsp;</a>
+                    <a v-for="(tag,index) in tags" :key="index" v-on:click="$emit('clickTagToSearch',tag)" class="tag">{{tag}}&nbsp;</a>
                 </div>
             </b-card-body>
         </b-card>
-
-        <!--expanded article-->
+        <!--the article expanded-->
         <b-modal :id="modalId" :title="title" ok-only lazy size="lg">
-            <div v-html="htmlContent">{{htmlContent==null?"Loading...":htmlContent}}</div>
+            <div v-html="htmlContent">{{htmlContent}}</div>
         </b-modal>
     </div>
 </template>
@@ -44,11 +43,12 @@
         },
         data() {
             return {
-                htmlContent: null
+                htmlContent: "Loading"
             }
         },
         methods: {
             showModal: function () {
+                this.htmlContent = "Loading"
                 fetchArticleHTML(this._id).then(res => {
                     if (res.status == 200) {
                         this.htmlContent = res.data.htmlContent
@@ -63,14 +63,14 @@
             },
             submissionDate() {
                 let date = new Date(this.submissionTime * 1000)
-                return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+                return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
             }
         }
     }
 </script>
 
 <style scoped>
-    .text-limits {
+    .content-limits {
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 4;
@@ -83,4 +83,10 @@
         -webkit-line-clamp: 2;
         overflow: hidden;
     }
+
+    .tag {
+        font-size: small;
+        cursor: pointer;
+    }
+
 </style>

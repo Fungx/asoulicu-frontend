@@ -2,9 +2,9 @@
     <b-container>
         <b-form-input v-on:keyup.enter="searchArticles" v-model="kw" placeholder="按标签搜索，用空格隔开"></b-form-input>
         <b-row cols-xl="4" cols-lg="3" cols-md="2" cols-sm="1">
-            <div v-for="item in articles" :key="item.id">
+            <div v-for="item in articles" :key="item._id">
                 <b-col>
-                    <ArticleCard class="article-card" v-bind="item" :key="item._id"></ArticleCard>
+                    <ArticleCard class="article-card" @clickTagToSearch="clickTagToSearch" v-bind="item" :key="item._id"></ArticleCard>
                 </b-col>
             </div>
         </b-row>
@@ -46,6 +46,8 @@
                             this.hasNext = res.data.count == this.pageSize//是否还有更多
                             this.pageNum++
                             this.articles.push.apply(this.articles, res.data.articles)
+                        } else if (res.status == 429) {
+                            alert("请求太频繁了")
                         }
                     })
                 }
@@ -66,6 +68,15 @@
                         this.articles = res.data.articles
                     }
                 })
+            },
+            /**
+             * 子组件点击tag，触发重新搜索
+             * @param tag
+             */
+            clickTagToSearch: function (tag) {
+                this.kw=tag
+                document.body.scrollIntoView() // 滚到顶端
+                this.searchArticles()
             }
         },
         mounted() {
@@ -83,5 +94,9 @@
     .load-btn {
         text-align: center;
         width: max-content;
+    }
+
+    .flip-list-move {
+        transition: transform 1s;
     }
 </style>
