@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-navbar  variant="info">
+        <b-navbar variant="info">
             <b-container>
                 <b-navbar-brand to="/">🥰</b-navbar-brand>
                 <b-navbar-nav class="ml-auto">
@@ -17,11 +17,7 @@
         </b-navbar>
         <b-modal id="modal-help" title="帮助" ok-only size="lg">
             <p>做了个小网站来存放一个魂儿们的小作文和定型文，因为第一次用vue和fastapi所以非常简陋，以后会继续改进的。</p>
-            <p>欢迎大家使用jiaranicu@outlook.com投稿和联系，如果不愿意您的作品被收录也可以联系我删除。以下是准备添加的功能</p>
-            <ul>
-                <li>投稿界面</li>
-                <li>多条件搜索</li>
-            </ul>
+            <p>欢迎大家使用jiaranicu@outlook.com投稿和联系，如果不愿意您的作品被收录也可以联系我删除。</p>
             <hr>
             <p>谢谢大家,谢谢大家</p>
             <p>一个魂儿，一个魂儿在哪里？</p>

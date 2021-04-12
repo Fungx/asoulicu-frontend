@@ -6,8 +6,8 @@
                     {{title}}
                 </b-card-title>
                 <b-card-sub-title>
-                    <p>{{author}} |&nbsp;{{submissionDate}}</p>
-                </b-card-sub-title>
+
+                </b-card-sub-title><p><span >{{author}}</span>&nbsp;|&nbsp;<span class="subtitle-date">{{submissionDate}}</span></p>
                 <!--content-->
                 <div style="cursor: pointer">
                     <b-card-text class="content-limits" @click="showModal">
@@ -87,6 +87,10 @@
     .tag {
         font-size: small;
         cursor: pointer;
+    }
+    .subtitle-date{
+        width: 88px;
+        display: inline-block;
     }
 
 </style>

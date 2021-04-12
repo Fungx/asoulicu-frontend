@@ -3,16 +3,11 @@
         <b-container>
             <h4>编辑器</h4>
             <quill-editor v-model="content" :options="option" class="editor"></quill-editor>
-            <b-row col cols-md="2" cols-sm="1">
-                <b-col>
-                    <b-button v-clipboard:copy="content"
-                              v-clipboard:success="onCopySuccess"
-                              v-clipboard:error="onCopyError"
-                              class="edit-btn" variant="info">复制HTML
-                    </b-button>
-                </b-col>
-            </b-row>
-
+            <b-button v-clipboard:copy="content"
+                      v-clipboard:success="onCopySuccess"
+                      v-clipboard:error="onCopyError"
+                      class="edit-btn" variant="info">复制HTML
+            </b-button>
         </b-container>
     </div>
 </template>
@@ -27,7 +22,7 @@
         components: {quillEditor},
         methods: {
             onCopySuccess: function () {
-                alert('复制成功' )
+                alert('复制成功')
             },
             onCopyError: function () {
                 alert('复制失败：')
@@ -40,7 +35,7 @@
                     modules: {
                         toolbar: [['bold', 'italic', 'underline', 'strike'],        // toggled buttons
                             ['blockquote', 'code-block'],
-
+                            ['link'],
                             [{'header': 1}, {'header': 2}],               // custom button values
                             [{'list': 'ordered'}, {'list': 'bullet'}],
                             [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
@@ -69,6 +64,6 @@
     }
 
     .edit-btn {
-        margin-top: 56px;
+        margin-top: 8vh;
     }
 </style>

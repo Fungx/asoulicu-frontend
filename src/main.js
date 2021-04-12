@@ -20,12 +20,18 @@ Vue.config.productionTip = false
 import TheEditor from "@/components/TheEditor";
 import TheArticle from "@/components/TheArticle";
 
-const routes = [{path: '/editor', component: TheEditor, keepAlive: true}, {
-    path: '/',
-    component: TheArticle,
-    keepAlive: true
-}]
-const router = new VueRouter({routes})
+const routes = [
+    {
+        path: '/editor',
+        component: TheEditor,
+        keepAlive: true
+    },
+    {
+        path: '/',
+        component: TheArticle,
+        keepAlive: true
+    }]
+const router = new VueRouter({mode: 'history', routes: routes})
 //
 new Vue({
     render: h => h(App), router
