@@ -4,14 +4,19 @@
         <b-row cols-xl="4" cols-lg="3" cols-md="2" cols-sm="1">
             <div v-for="item in articles" :key="item._id">
                 <b-col>
-                    <ArticleCard class="article-card" @clickTagToSearch="clickTagToSearch" v-bind="item" :key="item._id"></ArticleCard>
+                    <ArticleCard class="article-card" @clickTagToSearch="clickTagToSearch" v-bind="item"
+                                 :key="item._id"></ArticleCard>
                 </b-col>
             </div>
         </b-row>
         <h3 v-if="articles.length==0">没有符合条件的结果</h3>
         <hr>
         <div>
-            <b-button v-if="hasNext" block variant="outline-secondary" @click="fetchMoreArticles">点击加载更多</b-button>
+            <b-overlay :show="isLoading" rounded="">
+                <b-button v-if="hasNext" :disabled="isLoading" size="lg" block variant="outline-secondary"
+                          @click="fetchMoreArticles">点击加载更多
+                </b-button>
+            </b-overlay>
         </div>
     </b-container>
 
@@ -34,21 +39,31 @@
                 query: {},
                 pageNum: 0,
                 pageSize: 32,
+                isLoading: true
             }
         },
         methods: {
             fetchMoreArticles: function () {
                 if (this.hasNext) {
+                    this.isLoading = true
                     let params = {pageNum: this.pageNum, pageSize: this.pageSize}
                     params = Object.assign(params, this.query)// 合并查询参数
                     queryArticles(params).then(res => {
                         if (res.status == 200) {
                             this.hasNext = res.data.count == this.pageSize//是否还有更多
+                            if (this.pageNum == 0) {
+                                // 从头搜索
+                                this.articles = res.data.articles
+                            } else {
+                                // 获取更多
+                                this.articles.push.apply(this.articles, res.data.articles)
+                            }
                             this.pageNum++
-                            this.articles.push.apply(this.articles, res.data.articles)
                         } else if (res.status == 429) {
                             alert("请求太频繁了")
                         }
+                    }).finally(() => {
+                        this.isLoading = false
                     })
                 }
             },
@@ -57,24 +72,16 @@
                 this.pageNum = 0
                 this.hasNext = true
                 this.query = {}
-                let params = {pageNum: this.pageNum, pageSize: this.pageSize}
                 if (this.kw)
                     this.query.tags = this.kw.trim().split(/\s+/).join(",")
-                params = Object.assign(params, this.query)// 合并查询参数
-                queryArticles(params).then(res => {
-                    if (res.status == 200) {
-                        this.hasNext = res.data.count == this.pageSize//是否还有更多
-                        this.pageNum++
-                        this.articles = res.data.articles
-                    }
-                })
+                this.fetchMoreArticles()
             },
             /**
              * 子组件点击tag，触发重新搜索
              * @param tag
              */
             clickTagToSearch: function (tag) {
-                this.kw=tag
+                this.kw = tag
                 document.body.scrollIntoView() // 滚到顶端
                 this.searchArticles()
             }
