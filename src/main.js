@@ -8,7 +8,8 @@ import VueClipboard from "vue-clipboard2";
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 Vue.use(VueRouter)
@@ -31,7 +32,7 @@ const routes = [
         component: TheArticle,
         keepAlive: true
     }]
-const router = new VueRouter({mode: 'history', routes: routes})
+const router = new VueRouter({routes})
 //
 new Vue({
     render: h => h(App), router

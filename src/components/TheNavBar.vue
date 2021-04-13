@@ -4,11 +4,11 @@
             <b-container>
                 <b-navbar-brand to="/">🥰</b-navbar-brand>
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item>
-                        <b-link to="/editor">
-                            <b-icon-pencil alt="编辑器" title="编辑器" class="nav-icon"></b-icon-pencil>
-                        </b-link>
-                    </b-nav-item>
+<!--                    <b-nav-item>-->
+<!--                        <b-link to="/editor">-->
+<!--                            <b-icon-pencil alt="编辑器" title="编辑器" class="nav-icon"></b-icon-pencil>-->
+<!--                        </b-link>-->
+<!--                    </b-nav-item>-->
                     <b-nav-item v-b-modal="'modal-help'">
                         <b-icon-question-circle title="帮助" class="nav-icon"></b-icon-question-circle>
                     </b-nav-item>
@@ -41,11 +41,11 @@
 </template>
 
 <script>
-    import {BIconQuestionCircle, BIconPencil} from 'bootstrap-vue'
+    import {BIconQuestionCircle} from 'bootstrap-vue'
 
     export default {
         name: "TheNavBar",
-        components:{BIconQuestionCircle, BIconPencil}
+        components:{BIconQuestionCircle}
     }
 </script>
 

@@ -22,15 +22,14 @@
             </b-card-body>
         </b-card>
         <!--the article expanded-->
-        <b-modal :id="modalId" :title="title" ok-only lazy size="lg">
-            <div v-html="htmlContent">{{htmlContent}}</div>
+        <b-modal  :id="modalId" :title="title" ok-only lazy size="lg">
+            <div class="ql-snow" v-html="htmlContent">{{htmlContent}}</div>
         </b-modal>
     </div>
 </template>
 
 <script>
     import {fetchArticleHTML} from '../api/api'
-
     export default {
         name: "ArticleCard",
         props: {
