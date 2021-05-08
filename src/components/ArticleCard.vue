@@ -24,13 +24,13 @@
         <!--the article expanded-->
         <b-modal :id="modalId" ok-only lazy size="lg">
             <template #modal-header>
-                <div class="mod-title">
+                <div class="mod-header">
                     <h4>{{title}}
                         <b-icon-file-earmark-text @click="copyArticle"
                                                   style="cursor: pointer"
-                                                  title="复制全文"
-                        ></b-icon-file-earmark-text>
+                                                  title="复制全文"></b-icon-file-earmark-text>
                     </h4>
+                    <h6>{{author}}</h6>
                 </div>
             </template>
             <!-- body -->
@@ -116,9 +116,9 @@
         display: inline-block;
     }
 
-    .mod-title {
+    .mod-header {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: flex-start;
     }
 
