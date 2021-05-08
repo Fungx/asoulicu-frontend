@@ -6,8 +6,8 @@
                     {{title}}
                 </b-card-title>
                 <b-card-sub-title>
-
-                </b-card-sub-title><p><span >{{author}}</span></p>
+                </b-card-sub-title>
+                <p><span>{{author}}</span></p>
                 <!--content-->
                 <div style="cursor: pointer">
                     <b-card-text class="content-limits" @click="showModal">
@@ -22,14 +22,29 @@
             </b-card-body>
         </b-card>
         <!--the article expanded-->
-        <b-modal  :id="modalId" :title="title" ok-only lazy size="lg">
-            <div class="ql-snow" v-html="htmlContent">{{htmlContent}}</div>
+        <b-modal :id="modalId" ok-only lazy size="lg">
+            <template #modal-header>
+                <div class="mod-title">
+                    <h4>{{title}}
+                        <b-icon-file-earmark-text @click="copyArticle"
+                                                  style="cursor: pointer"
+                                                  title="复制全文"
+                        ></b-icon-file-earmark-text>
+                    </h4>
+                </div>
+            </template>
+            <!-- body -->
+            <div ref="content" v-html="htmlContent">{{htmlContent}}</div>
         </b-modal>
+
+
     </div>
 </template>
 
 <script>
     import {fetchArticleHTML} from '../api/api'
+    import {BIconFileEarmarkText} from 'bootstrap-vue'
+
     export default {
         name: "ArticleCard",
         props: {
@@ -40,6 +55,7 @@
             plainContent: String,
             tags: Array
         },
+        components: {BIconFileEarmarkText},
         data() {
             return {
                 htmlContent: "Loading"
@@ -54,6 +70,16 @@
                     }
                 })
                 this.$bvModal.show('modal-article-' + this._id)
+            },
+            copyArticle: function () {
+                //必须要加this.$refs.content才能在modal中复制
+                this.$copyText(this.$refs.content.innerText, this.$refs.content)
+                    .then(() => {
+                        this.$emit("showAlert",`已复制《${this.title}》`)
+                    }, (e) => {
+                        this.$emit("showAlert",`复制失败`)
+                        console.log(e)
+                    })
             }
         },
         computed: {
@@ -89,9 +115,12 @@
         margin-right: 2%;
         display: inline-block;
     }
-    .subtitle-date{
-        width: 88px;
-        display: inline-block;
+
+    .mod-title {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
     }
+
 
 </style>

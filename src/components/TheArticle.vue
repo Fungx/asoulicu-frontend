@@ -4,7 +4,8 @@
         <b-row cols-xl="4" cols-lg="3" cols-md="2" cols-sm="1">
             <div v-for="item in articles" :key="item._id">
                 <b-col>
-                    <ArticleCard class="article-card" @clickTagToSearch="clickTagToSearch" v-bind="item"
+                    <ArticleCard @showAlert="showAlert" class="article-card" @clickTagToSearch="clickTagToSearch"
+                                 v-bind="item"
                                  :key="item._id"></ArticleCard>
                 </b-col>
             </div>
@@ -18,6 +19,12 @@
                 </b-button>
             </b-overlay>
         </div>
+        <b-alert :show="dismissCountDown" variant="success" class="position-fixed fixed-bottom m-0 rounded-0" fade
+                 style="z-index: 2000;"
+                 @dismiss-count-down="countDownChanged"
+                 dismissible>
+            {{alterMessage}}
+        </b-alert>
     </b-container>
 
 </template>
@@ -40,9 +47,20 @@
                 pageNum: 0,
                 pageSize: 32,
                 isLoading: true,
+                // alter属性
+                alterMessage: "",
+                dismissCountDown: 0,
+                dismissSecs: 2 //alter消失倒计时
             }
         },
         methods: {
+            countDownChanged(dismissCountDown) {
+                this.dismissCountDown = dismissCountDown
+            },
+            showAlert(message) {
+                this.alterMessage = message
+                this.dismissCountDown = this.dismissSecs
+            },
             fetchMoreArticles: function () {
                 if (this.hasNext) {
                     this.isLoading = true

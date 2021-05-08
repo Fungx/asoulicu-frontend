@@ -14,6 +14,7 @@ import 'quill/dist/quill.snow.css'
 Vue.use(BootstrapVue)
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
+VueClipboard.config.autoSetContainer = true
 Vue.use(VueClipboard)
 Vue.config.productionTip = false
 
