@@ -12,7 +12,7 @@
         <h3 v-if="articles.length==0">没有符合条件的结果</h3>
         <hr>
         <div>
-            <b-overlay :show="isLoading" rounded="">
+            <b-overlay :show="isLoading" rounded>
                 <b-button v-if="hasNext" :disabled="isLoading" size="lg" block variant="outline-secondary"
                           @click="fetchMoreArticles">点击加载更多
                 </b-button>
@@ -39,7 +39,7 @@
                 query: {},
                 pageNum: 0,
                 pageSize: 32,
-                isLoading: true
+                isLoading: true,
             }
         },
         methods: {

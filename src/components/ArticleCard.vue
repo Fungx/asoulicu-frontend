@@ -7,7 +7,7 @@
                 </b-card-title>
                 <b-card-sub-title>
 
-                </b-card-sub-title><p><span >{{author}}</span>&nbsp;|&nbsp;<span class="subtitle-date">{{submissionDate}}</span></p>
+                </b-card-sub-title><p><span >{{author}}</span></p>
                 <!--content-->
                 <div style="cursor: pointer">
                     <b-card-text class="content-limits" @click="showModal">
@@ -17,7 +17,7 @@
                 <!-- tags -->
                 <hr>
                 <div>
-                    <a v-for="(tag,index) in tags" :key="index" v-on:click="$emit('clickTagToSearch',tag)" class="tag">{{tag}}&nbsp;</a>
+                    <a v-for="(tag,index) in tags" :key="index" v-on:click="$emit('clickTagToSearch',tag)" class="tag">{{tag}}</a>
                 </div>
             </b-card-body>
         </b-card>
@@ -86,6 +86,8 @@
     .tag {
         font-size: small;
         cursor: pointer;
+        margin-right: 2%;
+        display: inline-block;
     }
     .subtitle-date{
         width: 88px;
