@@ -1,24 +1,9 @@
-# front-end
+# Asoul-ICU小作文库
 
-## Project setup
-```
-yarn install
-```
+## 简介
+做了个小网站来存放大家的小作文，主要来自B站评论区、S1、A吧，没什么标准，一般看到自己觉得比较好玩的就会偷进来。
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+如果你也有想分享的作文，欢迎大家使用jiaranicu@outlook.com投稿和联系，如果不愿意您的作品被收录也可以联系我删除。
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 网站地址
+https://asoul.icu
