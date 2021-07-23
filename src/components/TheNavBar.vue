@@ -2,7 +2,7 @@
     <div>
         <b-navbar variant="info">
             <b-container>
-                <b-navbar-brand to="/">🥰</b-navbar-brand>
+                <b-navbar-brand to="/articles">🥰</b-navbar-brand>
                 <b-navbar-nav class="ml-auto">
 <!--                    <b-nav-item>-->
 <!--                        <b-link to="/editor">-->

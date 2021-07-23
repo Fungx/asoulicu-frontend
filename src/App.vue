@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class>
+    <div id="app" >
         <TheNavBar></TheNavBar>
         <div class="page-content">
             <transition name="fade">

@@ -5,7 +5,7 @@
         <b-form-select v-model="searchSelected" :options="searchOptions"></b-form-select>
       </b-col>
       <b-col cols="8" md="10">
-        <b-form-input v-on:keyup.enter="searchArticles" v-model="kw" placeholder="搜索小作文"></b-form-input>
+        <b-form-input v-on:keyup.enter="searchArticles" v-model="kw" placeholder="搜索小作文,使用标签时用空格隔开"></b-form-input>
       </b-col>
     </b-row>
     <hr/>
@@ -144,10 +144,24 @@ export default {
       this.searchSelected = 'author'
       document.body.scrollIntoView() // 滚到顶端
       this.searchArticles()
+    },
+    changeQuery:function (mode,kw){
+      this.kw=kw
+      this.searchSelected=mode
     }
+
   },
   mounted() {
     this.searchSelected = this.searchOptions[0].value
+    // // 根据url查询参数筛选
+    // let q = this.$route.query
+    // if (q.author) {
+    //   this.searchSelected='author'
+    //   this.kw=q.author
+    // }else if (q.title){
+    //   this.searchSelected='title'
+    //   this.kw=q.title
+    // }
     this.searchArticles()
   },
 }

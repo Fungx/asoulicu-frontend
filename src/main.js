@@ -30,7 +30,17 @@ const routes = [
     },
     {
         path: '/',
+        redirect:'/articles',
+    },
+    {
+        path: '/articles',
         component: TheArticle,
+        keepAlive: true
+    },
+    {
+        path: '/articles',
+        component: TheArticle,
+        props:true,
         keepAlive: true
     }]
 const router = new VueRouter({

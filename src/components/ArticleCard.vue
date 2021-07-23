@@ -22,7 +22,7 @@
         </div>
       </b-card-body>
     </b-card>
-    <!--the article expanded-->
+    <!--the expanded article -->
     <b-modal :id="modalId" ok-only lazy size="lg">
       <template #modal-header>
         <div class="mod-header">
@@ -33,7 +33,6 @@
                                         title="复制全文"></b-icon-file-earmark-text>
             </h4>
             <h4><b-icon-x class="clickable" @click="$bvModal.hide('modal-article-' + _id)"></b-icon-x></h4>
-
           </div>
           <h6>{{ author }}</h6>
         </div>
