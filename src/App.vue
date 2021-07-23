@@ -46,4 +46,13 @@
     {
         opacity: 0;
     }
+
+    .clickable{
+      color: dimgray;
+      cursor: pointer;
+    }
+    .clickable:hover{
+      color: #2c3e50;
+    }
+
 </style>
