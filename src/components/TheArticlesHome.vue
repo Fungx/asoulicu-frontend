@@ -12,7 +12,7 @@
     <b-row cols-xl="4" cols-lg="3" cols-md="2" cols-sm="1">
       <div v-for="item in articles" :key="item._id">
         <b-col>
-          <ArticleCard @showAlert="showAlert" class="article-card"
+          <ArticleCard  class="article-card"
                        @handleAuthorClick="handleAuthorClick"
                        @handleTagClick="handleTagClick"
                        v-bind="item"
