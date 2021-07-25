@@ -20,6 +20,7 @@ Vue.config.productionTip = false
 
 // Router
 import TheEditor from "@/components/TheEditor";
+import TheArticlesHome from '@/components/TheArticlesHome'
 import TheArticle from "@/components/TheArticle";
 
 const routes = [
@@ -30,17 +31,16 @@ const routes = [
     },
     {
         path: '/',
-        redirect:'/articles',
+        redirect: '/articles',
     },
     {
         path: '/articles',
-        component: TheArticle,
+        component: TheArticlesHome,
         keepAlive: true
     },
     {
-        path: '/articles',
+        path: '/articles/:s',
         component: TheArticle,
-        props:true,
         keepAlive: true
     }]
 const router = new VueRouter({

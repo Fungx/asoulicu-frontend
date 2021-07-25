@@ -1,33 +1,39 @@
-<template xmlns:v="http://www.w3.org/1999/xhtml">
+<template>
   <b-container>
-    <b-row>
-      <b-col cols="4" md="2">
-        <b-form-select v-model="searchSelected" :options="searchOptions"></b-form-select>
-      </b-col>
-      <b-col cols="8" md="10">
-        <b-form-input v-on:keyup.enter="searchArticles" v-model="kw" placeholder="搜索小作文,使用标签时用空格隔开"></b-form-input>
-      </b-col>
-    </b-row>
-    <hr/>
-    <b-row cols-xl="4" cols-lg="3" cols-md="2" cols-sm="1">
-      <div v-for="item in articles" :key="item._id">
-        <b-col>
-          <ArticleCard @showAlert="showAlert" class="article-card"
-                       @handleAuthorClick="handleAuthorClick"
-                       @handleTagClick="handleTagClick"
-                       v-bind="item"
-                       :key="item._id"></ArticleCard>
+    <div v-if="article">
+      <b-row>
+        <b-col cols="9">
+          <h2><span>{{ article.title }}</span></h2>
         </b-col>
-      </div>
-    </b-row>
-    <h3 v-if="articles.length==0">没有符合条件的结果</h3>
-    <hr>
-    <div>
-      <b-overlay :show="isLoading" rounded>
-        <b-button v-if="hasNext" :disabled="isLoading" size="lg" block variant="outline-secondary"
-                  @click="fetchMoreArticles">点击加载更多
-        </b-button>
-      </b-overlay>
+        <b-col cols="3" class="detail-toolbar">
+          <h2>
+            <BIconFileEarmarkText class="clickable" @click="copyArticle" title="复制全文"></BIconFileEarmarkText>
+          </h2>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <h5>{{ article.author }}</h5>
+        </b-col>
+      </b-row>
+      <hr/>
+      <b-row>
+        <b-col>
+          <div ref="htmlContent" v-html="article.htmlContent"></div>
+        </b-col>
+      </b-row>
+      <hr/>
+      <b-row>
+        <b-col>
+          <b-button size="lg" block variant="outline-secondary" @click="goBack">
+            <BIconBoxArrowLeft></BIconBoxArrowLeft>&nbsp;点击返回
+          </b-button>
+
+        </b-col>
+      </b-row>
+    </div>
+    <div v-else>
+      Loading...
     </div>
     <b-alert :show="dismissCountDown" variant="success" class="position-fixed fixed-bottom m-0 rounded-0" fade
              style="z-index: 2000;"
@@ -36,41 +42,65 @@
       {{ alterMessage }}
     </b-alert>
   </b-container>
-
 </template>
 
 <script>
-import ArticleCard from './ArticleCard.vue'
-import {queryArticles} from "@/api/api";
+import {fetchArticle} from "../api/api";
+import {BIconFileEarmarkText, BIconBoxArrowLeft} from "bootstrap-vue";
 
 export default {
-  name: 'TheArticle',
-  components: {
-    ArticleCard
-  },
+  name: "TheArticle",
+  components: {BIconFileEarmarkText, BIconBoxArrowLeft},
   data() {
     return {
-      articles: [],
-      hasNext: true,
-      kw: "",
-      query: {},
-      pageNum: 0,
-      pageSize: 32,
-      isLoading: true,
+      article: null,
       // alter属性
       alterMessage: "",
       dismissCountDown: 0,
       dismissSecs: 2, //alter消失倒计时
-      // search
-      searchSelected: null,
-      searchOptions: [
-        {value: 'title', text: '标题'},
-        {value: 'author', text: '作者'},
-        {value: 'tags', text: '标签'}
-      ]
     }
   },
   methods: {
+    /**
+     * 获取文章详情
+     */
+    fetchTheArticle: function () {
+      let s = this.$route.params.s
+      fetchArticle(s).then(res => {
+        switch (res.status) {
+          case 200:
+            this.article = res.data
+            break
+          case 404:
+            this.article = null
+            break
+          default:
+            alert(res.statusText)
+        }
+      })
+    },
+    /**
+     * 点击复制作文
+     */
+    copyArticle: function () {
+      this.$copyText(this.$refs.htmlContent.innerText, this.$refs.htmlContent)
+          .then(() => {
+            this.showAlert(`已复制《${this.article.title}》`)
+          }, () => {
+            this.showAlert(`复制失败`)
+          })
+    },
+    /**
+     * 返回上一页
+     */
+    goBack: function () {
+      this.$router.go(-1)
+    },
+
+    /**
+     * 控制alter时间
+     * @param dismissCountDown 消失倒计时
+     */
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown
     },
@@ -78,107 +108,24 @@ export default {
       this.alterMessage = message
       this.dismissCountDown = this.dismissSecs
     },
-    fetchMoreArticles: function () {
-      if (this.hasNext) {
-        this.isLoading = true
-        let params = {pageNum: this.pageNum, pageSize: this.pageSize}
-        params = Object.assign(params, this.query)// 合并查询参数
-        queryArticles(params).then(res => {
-          if (res.status == 200) {
-            this.hasNext = res.data.count == this.pageSize//是否还有更多
-            if (this.pageNum == 0) {
-              // 从头搜索
-              this.articles = res.data.articles
-            } else {
-              // 获取更多
-              this.articles.push.apply(this.articles, res.data.articles)
-            }
-            this.pageNum++
-          } else if (res.status == 429) {
-            alert("请求太频繁了")
-          } else {
-            alert(res.statusText)
-          }
-        }).finally(() => {
-          this.isLoading = false
-        })
-      }
-    },
-    searchArticles: function () {
-      // 重新开始搜索
-      this.pageNum = 0
-      this.hasNext = true
-      this.query = {}
-      let w = this.kw.trim()
-      if (w) {
-        switch (this.searchSelected) {
-          case 'title':
-            this.query.title = w
-            break
-          case 'author':
-            this.query.author = w
-            break
-          case 'tags':
-            this.query.tags = w.split(/\s+/).join(",")
-            break
-        }
-      }
-      this.fetchMoreArticles()
-    },
-    /**
-     * 子组件点击tag，触发重新搜索
-     * @param tag
-     */
-    handleTagClick: function (tag) {
-      this.searchSelected = 'tags'
-      this.kw = tag
-      document.body.scrollIntoView() // 滚到顶端
-      this.searchArticles()
-    },
-    /**
-     * 子组件点击author，触发重新搜索
-     * @param author
-     */
-    handleAuthorClick: function (author) {
-      this.kw = author
-      this.searchSelected = 'author'
-      document.body.scrollIntoView() // 滚到顶端
-      this.searchArticles()
-    },
-    changeQuery:function (mode,kw){
-      this.kw=kw
-      this.searchSelected=mode
-    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.fetchTheArticle()
+    })
+  },
+  beforeRouteLeave(to, from, next) {
+    this.article = null
+    next()
+  }
 
-  },
-  mounted() {
-    this.searchSelected = this.searchOptions[0].value
-    // // 根据url查询参数筛选
-    // let q = this.$route.query
-    // if (q.author) {
-    //   this.searchSelected='author'
-    //   this.kw=q.author
-    // }else if (q.title){
-    //   this.searchSelected='title'
-    //   this.kw=q.title
-    // }
-    this.searchArticles()
-  },
+
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.article-card {
-  padding-top: 5%;
-}
-
-.load-btn {
-  text-align: center;
-  width: max-content;
-}
-
-.flip-list-move {
-  transition: transform 1s;
+.detail-toolbar {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

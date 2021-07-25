@@ -10,7 +10,7 @@
         <p class="clickable" v-on:click="$emit('handleAuthorClick',author)"><span>{{ author }}</span></p>
         <!--content-->
         <div style="cursor: pointer">
-          <b-card-text class="content-limits" @click="showModal">
+          <b-card-text class="content-limits" @click="openArticle">
             {{ plainContent }}
           </b-card-text>
         </div>
@@ -22,33 +22,32 @@
         </div>
       </b-card-body>
     </b-card>
-    <!--the expanded article -->
-    <b-modal :id="modalId" ok-only lazy size="lg">
-      <template #modal-header>
-        <div class="mod-header">
-          <div class="mod-title">
-            <h4>{{ title }}
-              <b-icon-file-earmark-text @click="copyArticle"
-                                        class="clickable"
-                                        title="复制全文"></b-icon-file-earmark-text>
-            </h4>
-            <h4><b-icon-x class="clickable" @click="$bvModal.hide('modal-article-' + _id)"></b-icon-x></h4>
-          </div>
-          <h6>{{ author }}</h6>
-        </div>
-      </template>
-      <!-- body -->
-      <div ref="content" v-html="htmlContent">{{ htmlContent }}</div>
-    </b-modal>
+    <!--the expanded article 已弃用-->
+<!--    <b-modal :id="modalId" ok-only lazy size="lg">-->
+<!--      <template #modal-header>-->
+<!--        <div class="mod-header">-->
+<!--          <div class="mod-title">-->
+<!--            <h4>{{ title }}-->
+<!--              <b-icon-file-earmark-text @click="copyArticle"-->
+<!--                                        class="clickable"-->
+<!--                                        title="复制全文"></b-icon-file-earmark-text>-->
+<!--            </h4>-->
+<!--            <h4>-->
+<!--              <b-icon-x class="clickable" @click="$bvModal.hide('modal-article-' + _id)"></b-icon-x>-->
+<!--            </h4>-->
+<!--          </div>-->
+<!--          <h6>{{ author }}</h6>-->
+<!--        </div>-->
+<!--      </template>-->
+<!--      &lt;!&ndash; body &ndash;&gt;-->
+<!--      <div ref="content" v-html="htmlContent">{{ htmlContent }}</div>-->
+<!--    </b-modal>-->
 
 
   </div>
 </template>
 
 <script>
-import {fetchArticleHTML} from '../api/api'
-import {BIconFileEarmarkText, BIconX} from 'bootstrap-vue'
-
 export default {
   name: "ArticleCard",
   props: {
@@ -59,39 +58,21 @@ export default {
     plainContent: String,
     tags: Array
   },
-  components: {BIconFileEarmarkText, BIconX},
   data() {
     return {
       htmlContent: "Loading"
     }
   },
   methods: {
-    showModal: function () {
-      this.htmlContent = "Loading"
-      fetchArticleHTML(this._id).then(res => {
-        if (res.status == 200) {
-          this.htmlContent = res.data.htmlContent
-        } else {
-          alert(res.statusText)
-        }
-      })
-      this.$bvModal.show('modal-article-' + this._id)
+    /**
+     * 打开文章，跳转到详细页
+     */
+    openArticle: function () {
+      this.$router.push({path: `articles/${this.title}`})
     },
-    copyArticle: function () {
-      //必须要加this.$refs.content才能在modal中复制
-      this.$copyText(this.$refs.content.innerText, this.$refs.content)
-          .then(() => {
-            this.$emit("showAlert", `已复制《${this.title}》`)
-          }, (e) => {
-            this.$emit("showAlert", `复制失败`)
-            console.log(e)
-          })
-    }
   },
   computed: {
-    modalId() {
-      return 'modal-article-' + this._id
-    },
+
     submissionDate() {
       let date = new Date(this.submissionTime * 1000)
       return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
@@ -121,7 +102,8 @@ export default {
   justify-content: flex-start;
   width: 100%;
 }
-.mod-title{
+
+.mod-title {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

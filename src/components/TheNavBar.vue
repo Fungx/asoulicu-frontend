@@ -2,17 +2,12 @@
   <div>
     <b-navbar variant="info">
       <b-container>
-        <b-navbar-brand to="/articles">🥰</b-navbar-brand>
-        <b-navbar-nav class="ml-auto">
-          <!--                    <b-nav-item>-->
-          <!--                        <b-link to="/editor">-->
-          <!--                            <b-icon-pencil alt="编辑器" title="编辑器" class="nav-icon"></b-icon-pencil>-->
-          <!--                        </b-link>-->
-          <!--                    </b-nav-item>-->
-          <b-nav-item v-b-modal="'modal-help'">
-            <b-icon-question-circle title="帮助" class="nav-icon"></b-icon-question-circle>
-          </b-nav-item>
-        </b-navbar-nav>
+            <b-navbar-brand to="/articles">🥰</b-navbar-brand>
+          <b-navbar-nav class="ml-auto nav-toolbar" >
+            <b-nav-item v-b-modal="'modal-help'">
+              <b-icon-question-circle title="帮助" class="nav-icon"></b-icon-question-circle>
+            </b-nav-item>
+          </b-navbar-nav>
       </b-container>
     </b-navbar>
     <b-modal id="modal-help" title="帮助" ok-only size="lg">
@@ -22,24 +17,31 @@
       <h5>使用方法</h5>
       <ul>
         <li>上方搜索栏可以选择“标题”，“作者”或“标签”，按回车搜索。其中标签搜索需要输入完整的名称，
-          多个标签用空格隔开（比如“嘉然 向晚”，会显示包含这两个标签的文章）</li>
+          多个标签用空格隔开（比如“嘉然 向晚”，会显示包含这两个标签的文章）
+        </li>
         <li>点击小卡片上的作者或标签，也可以直接搜索</li>
         <li>想要显示全部内容，可以 直接刷新 或者 将搜索栏清空再搜索</li>
-        <li>点击小作文标题旁的<b-icon-file-earmark-text/>可以直接复制全文</li>
+        <li>点击小作文标题旁的
+          <b-icon-file-earmark-text/>
+          可以直接复制全文
+        </li>
       </ul>
     </b-modal>
   </div>
 </template>
 
 <script>
-import {BIconQuestionCircle,BIconFileEarmarkText} from 'bootstrap-vue'
+import {BIconQuestionCircle, BIconFileEarmarkText} from 'bootstrap-vue'
 
 export default {
   name: "TheNavBar",
-  components: {BIconQuestionCircle,BIconFileEarmarkText}
+  components: {BIconQuestionCircle, BIconFileEarmarkText}
 }
 </script>
 
 <style scoped>
-
+.nav-toolbar{
+  display: flex;
+  justify-content: flex-end;
+}
 </style>
