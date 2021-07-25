@@ -77,7 +77,7 @@ export default {
           default:
             alert(res.statusText)
         }
-      })
+      }).finally(()=>document.body.scrollIntoView()) // 滚到顶端
     },
     /**
      * 点击复制作文
