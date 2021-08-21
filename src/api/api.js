@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// const host = 'http://localhost:8080/v'
-const host = 'https://asoul.icu/v'
+const host = 'http://localhost:8080/v'
+// const host = 'https://asoul.icu/v'
 
 // 根据id获取某个作文内容HTML
 const fetchArticleHTML = id => {
@@ -16,6 +16,10 @@ const fetchArticle = s => {
 const queryArticles = (params) => {
     return axios.get(`${host}/articles/q`, {params: params})
 }
+// 获取所有tags
+// const fetchTags=()=>{
+//     return axios.get(`${host}/tags`)
+// }
 
 export {
     fetchArticleHTML, queryArticles,fetchArticle

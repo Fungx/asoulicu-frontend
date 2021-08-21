@@ -12,7 +12,7 @@
     <b-row cols-xl="4" cols-lg="3" cols-md="2" cols-sm="1">
       <div v-for="item in articles" :key="item._id">
         <b-col>
-          <ArticleCard  class="article-card"
+          <ArticleCard class="article-card"
                        @handleAuthorClick="handleAuthorClick"
                        @handleTagClick="handleTagClick"
                        v-bind="item"
@@ -37,9 +37,10 @@
 <script>
 import ArticleCard from './ArticleCard.vue'
 import {queryArticles} from "@/api/api";
+import {QueryParams} from "../store.js";
 
 export default {
-  name: 'TheArticle',
+  name: 'TheArticleHome',
   components: {
     ArticleCard
   },
@@ -48,7 +49,7 @@ export default {
       articles: [],
       hasNext: true,
       kw: "",
-      query: {},
+      query: QueryParams.state,
       pageNum: 0,
       pageSize: 32,
       isLoading: true,
@@ -63,7 +64,6 @@ export default {
     }
   },
   methods: {
-
     fetchMoreArticles: function () {
       if (this.hasNext) {
         this.isLoading = true
@@ -94,18 +94,18 @@ export default {
       // 重新开始搜索
       this.pageNum = 0
       this.hasNext = true
-      this.query = {}
+      QueryParams.clear()
       let w = this.kw.trim()
       if (w) {
         switch (this.searchSelected) {
           case 'title':
-            this.query.title = w
+            QueryParams.setTitle(w)
             break
           case 'author':
-            this.query.author = w
+            QueryParams.setAuthor(w)
             break
           case 'tags':
-            this.query.tags = w.split(/\s+/).join(",")
+            QueryParams.setTags(w.split(/\s+/).join(","))
             break
         }
       }
@@ -131,9 +131,9 @@ export default {
       document.body.scrollIntoView() // 滚到顶端
       this.searchArticles()
     },
-    changeQuery:function (mode,kw){
-      this.kw=kw
-      this.searchSelected=mode
+    changeQuery: function (mode, kw) {
+      this.kw = kw
+      this.searchSelected = mode
     }
 
   },

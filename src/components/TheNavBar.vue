@@ -2,7 +2,7 @@
   <div>
     <b-navbar variant="info">
       <b-container>
-            <b-navbar-brand to="/articles">🥰</b-navbar-brand>
+            <b-navbar-brand>🥰</b-navbar-brand>
           <b-navbar-nav class="ml-auto nav-toolbar" >
             <b-nav-item v-b-modal="'modal-help'">
               <b-icon-question-circle title="帮助" class="nav-icon"></b-icon-question-circle>
