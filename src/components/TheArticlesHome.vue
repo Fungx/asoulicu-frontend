@@ -5,7 +5,53 @@
         <b-form-select v-model="searchSelected" :options="searchOptions"></b-form-select>
       </b-col>
       <b-col cols="8" md="10">
-        <b-form-input v-on:keyup.enter="searchArticles" v-model="kw" placeholder="搜索小作文,使用标签时用空格隔开"></b-form-input>
+        <div style="display: flex">
+          <b-form-input v-on:keyup.enter="searchArticles" v-model="kw" placeholder="搜索小作文,按回车确定"></b-form-input>
+          <p class="click-btn h3" style="align-self: center" @click="clearQuery">
+            <b-icon-x name="clearBtn"></b-icon-x>
+          </p>
+        </div>
+      </b-col>
+
+    </b-row>
+    <b-row>
+      <b-col>
+        <!-- Prop `add-on-change` is needed to enable adding tags vie the `change` event -->
+        <b-form-tags
+            class="tags-block"
+            v-model="query.tags"
+            size="lg"
+            add-on-change
+            no-outer-focus
+        >
+          <template v-slot="{ tags, inputAttrs, inputHandlers, disabled, removeTag }">
+            <div>
+              <b-form-select
+                  v-bind="inputAttrs"
+                  v-on="inputHandlers"
+                  :disabled="disabled || availableTagOptions.length === 0"
+                  :options="availableTagOptions"
+              >
+                <template #first>
+                  <!-- This is required to prevent bugs with Safari -->
+                  <option disabled value="">选择标签 (在下一次搜索生效)</option>
+                </template>
+              </b-form-select>
+
+            </div>
+            <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
+              <li v-for="tag in tags" :key="tag" class="list-inline-item">
+                <b-form-tag
+                    class="tags-item"
+                    @remove="removeTag(tag)"
+                    :title="tag"
+                    :disabled="disabled"
+                >{{ tag }}
+                </b-form-tag>
+              </li>
+            </ul>
+          </template>
+        </b-form-tags>
       </b-col>
     </b-row>
     <hr/>
@@ -36,13 +82,14 @@
 
 <script>
 import ArticleCard from './ArticleCard.vue'
-import {queryArticles} from "@/api/api";
+import {queryArticles, fetchTags} from "@/api/api";
 import {QueryParams} from "../store.js";
+import {BIconX} from 'bootstrap-vue'
 
 export default {
   name: 'TheArticleHome',
   components: {
-    ArticleCard
+    ArticleCard, BIconX
   },
   data() {
     return {
@@ -51,15 +98,14 @@ export default {
       kw: "",
       query: QueryParams.state,
       pageNum: 0,
-      pageSize: 32,
+      pageSize: 36,
       isLoading: true,
-
+      tagOptions: [],
       // search
       searchSelected: null,
       searchOptions: [
         {value: 'title', text: '标题'},
-        {value: 'author', text: '作者'},
-        {value: 'tags', text: '标签'}
+        {value: 'author', text: '作者'}
       ]
     }
   },
@@ -69,6 +115,7 @@ export default {
         this.isLoading = true
         let params = {pageNum: this.pageNum, pageSize: this.pageSize}
         params = Object.assign(params, this.query)// 合并查询参数
+        params.tags = params.tags.toString()
         queryArticles(params).then(res => {
           if (res.status == 200) {
             this.hasNext = res.data.count == this.pageSize//是否还有更多
@@ -94,32 +141,41 @@ export default {
       // 重新开始搜索
       this.pageNum = 0
       this.hasNext = true
-      QueryParams.clear()
       let w = this.kw.trim()
       if (w) {
         switch (this.searchSelected) {
           case 'title':
             QueryParams.setTitle(w)
+            QueryParams.setAuthor(null)
             break
           case 'author':
             QueryParams.setAuthor(w)
-            break
-          case 'tags':
-            QueryParams.setTags(w.split(/\s+/).join(","))
+            QueryParams.setTitle(null)
             break
         }
       }
       this.fetchMoreArticles()
+    },
+
+    fetchTagItems: function () {
+      fetchTags().then(res => {
+        if (res.status == 200) {
+          this.tagOptions = res.data.map((item) => {
+            return item.name
+          })
+        } else {
+          console.log(res.statusText)
+        }
+      })
     },
     /**
      * 子组件点击tag，触发重新搜索
      * @param tag
      */
     handleTagClick: function (tag) {
-      this.searchSelected = 'tags'
-      this.kw = tag
+      QueryParams.addTag(tag)
       document.body.scrollIntoView() // 滚到顶端
-      this.searchArticles()
+      // this.searchArticles()
     },
     /**
      * 子组件点击author，触发重新搜索
@@ -131,11 +187,28 @@ export default {
       document.body.scrollIntoView() // 滚到顶端
       this.searchArticles()
     },
+    /**
+     * 点击添加tag
+     * */
+    handleTagOptionClick: function (tag) {
+      QueryParams.addTag(tag)
+    },
+    clearQuery: function () {
+      this.kw = ''
+      QueryParams.clear()
+      this.searchArticles()
+    },
     changeQuery: function (mode, kw) {
       this.kw = kw
       this.searchSelected = mode
     }
 
+  },
+  computed: {
+    availableTagOptions: function () {
+      // 过滤已选择的tag
+      return this.tagOptions.filter(opt => this.query.tags.indexOf(opt) == -1)
+    }
   },
   mounted() {
     this.searchSelected = this.searchOptions[0].value
@@ -148,6 +221,7 @@ export default {
     //   this.searchSelected='title'
     //   this.kw=q.title
     // }
+    this.fetchTagItems()
     this.searchArticles()
   },
 }
@@ -156,7 +230,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .article-card {
-  padding-top: 5%;
+  padding-top: 1em;
 }
 
 .load-btn {
@@ -166,5 +240,15 @@ export default {
 
 .flip-list-move {
   transition: transform 1s;
+}
+
+.tags-block {
+  margin-top: 0.5em;
+  border: none;
+  padding: 0px;
+}
+
+.tags-item {
+  margin-top: 0.5em;
 }
 </style>

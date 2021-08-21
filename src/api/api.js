@@ -17,10 +17,10 @@ const queryArticles = (params) => {
     return axios.get(`${host}/articles/q`, {params: params})
 }
 // 获取所有tags
-// const fetchTags=()=>{
-//     return axios.get(`${host}/tags`)
-// }
+const fetchTags=()=>{
+    return axios.get(`${host}/tags`)
+}
 
 export {
-    fetchArticleHTML, queryArticles,fetchArticle
+    fetchArticleHTML, queryArticles,fetchArticle,fetchTags
 }

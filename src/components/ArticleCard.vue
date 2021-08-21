@@ -7,7 +7,7 @@
         </b-card-title>
         <b-card-sub-title>
         </b-card-sub-title>
-        <p class="clickable" v-on:click="$emit('handleAuthorClick',author)"><span>{{ author }}</span></p>
+        <p class="click-btn" v-on:click="$emit('handleAuthorClick',author)"><span>{{ author }}</span></p>
         <!--content-->
         <div style="cursor: pointer">
           <b-card-text class="content-limits" @click="openArticle">
@@ -22,28 +22,6 @@
         </div>
       </b-card-body>
     </b-card>
-    <!--the expanded article 已弃用-->
-<!--    <b-modal :id="modalId" ok-only lazy size="lg">-->
-<!--      <template #modal-header>-->
-<!--        <div class="mod-header">-->
-<!--          <div class="mod-title">-->
-<!--            <h4>{{ title }}-->
-<!--              <b-icon-file-earmark-text @click="copyArticle"-->
-<!--                                        class="clickable"-->
-<!--                                        title="复制全文"></b-icon-file-earmark-text>-->
-<!--            </h4>-->
-<!--            <h4>-->
-<!--              <b-icon-x class="clickable" @click="$bvModal.hide('modal-article-' + _id)"></b-icon-x>-->
-<!--            </h4>-->
-<!--          </div>-->
-<!--          <h6>{{ author }}</h6>-->
-<!--        </div>-->
-<!--      </template>-->
-<!--      &lt;!&ndash; body &ndash;&gt;-->
-<!--      <div ref="content" v-html="htmlContent">{{ htmlContent }}</div>-->
-<!--    </b-modal>-->
-
-
   </div>
 </template>
 

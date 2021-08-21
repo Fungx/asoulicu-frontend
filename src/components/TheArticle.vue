@@ -7,7 +7,7 @@
         </b-col>
         <b-col cols="3" class="detail-toolbar">
           <h2>
-            <BIconFileEarmarkText class="clickable" @click="copyArticle" title="复制全文"></BIconFileEarmarkText>
+            <BIconFileEarmarkText class="click-btn" @click="copyArticle" title="复制全文"></BIconFileEarmarkText>
           </h2>
         </b-col>
       </b-row>

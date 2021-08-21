@@ -31,8 +31,8 @@ export default {
 }
 
 .page-content {
-  padding-top: 2%;
-  padding-bottom: 5%;
+  padding-top: 1em;
+  padding-bottom: 2em;
 }
 
 .nav-icon {
@@ -48,12 +48,12 @@ export default {
   opacity: 0;
 }
 
-.clickable {
+.click-btn {
   color: dimgray;
   cursor: pointer;
 }
 
-.clickable:hover {
+.click-btn:hover {
   color: #2c3e50;
 }
 
