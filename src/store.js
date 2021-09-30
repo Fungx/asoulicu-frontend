@@ -1,6 +1,6 @@
 // store模式管理状态
 export const QueryParams = {
-    isDebug: true,
+    isDebug: false,
     state: {
         title: null,
         author: null,

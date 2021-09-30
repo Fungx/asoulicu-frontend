@@ -77,7 +77,7 @@ export default {
           default:
             alert(res.statusText)
         }
-      }).finally(()=>document.body.scrollIntoView()) // 滚到顶端
+      }).finally(() => document.body.scrollIntoView()) // 滚到顶端
     },
     /**
      * 点击复制作文
@@ -94,7 +94,11 @@ export default {
      * 返回上一页
      */
     goBack: function () {
-      this.$router.go(-1)
+      if (window.history.length <= 1) {
+        this.$router.push("/")
+      } else {
+        this.$router.go(-1)
+      }
     },
 
     /**
