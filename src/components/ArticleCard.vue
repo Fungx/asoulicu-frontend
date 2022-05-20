@@ -11,7 +11,7 @@
         <!--content-->
         <div style="cursor: pointer">
           <b-card-text class="content-limits" @click="openArticle">
-            {{ plainContent }}
+            {{ brief }}
           </b-card-text>
         </div>
         <!-- tags -->
@@ -32,8 +32,8 @@ export default {
     _id: String,
     title: String,
     author: String,
-    submissionTime: Number,
-    plainContent: String,
+    createTime: Number,
+    brief: String,
     tags: Array
   },
   data() {
@@ -51,8 +51,8 @@ export default {
   },
   computed: {
 
-    submissionDate() {
-      let date = new Date(this.submissionTime * 1000)
+    createDate() {
+      let date = new Date(this.createTime * 1000)
       return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
     }
   }

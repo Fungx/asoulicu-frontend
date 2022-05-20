@@ -2,19 +2,13 @@
 export const QueryParams = {
     isDebug: false,
     state: {
-        title: null,
-        author: null,
+        kw: null,
         tags: []
     },
-    setTitle(s) {
+    setKw(s) {
         if (this.isDebug)
-            console.log("set title=" + s)
-        this.state.title = s
-    },
-    setAuthor(s) {
-        if (this.isDebug)
-            console.log("set author=" + s)
-        this.state.author = s
+            console.log(`set kw=${s}`)
+        this.state.kw = s
     },
     setTags(arr) {
         if (this.isDebug)
@@ -22,7 +16,7 @@ export const QueryParams = {
         this.state.tags = arr
     },
     addTag(t) {
-        let exist=this.state.tags.indexOf(t) !== -1
+        let exist = this.state.tags.indexOf(t) !== -1
         if (!exist)
             this.state.tags.push(t)
         if (this.isDebug)
@@ -31,8 +25,7 @@ export const QueryParams = {
     clear() {
         if (this.isDebug)
             console.log('clear')
-        this.state.title = null
-        this.state.author = null
+        this.state.kw = null
         this.state.tags = []
     }
 }

@@ -1,12 +1,12 @@
 <template xmlns:v="http://www.w3.org/1999/xhtml">
   <b-container>
     <b-row>
-      <b-col cols="4" md="2">
-        <b-form-select v-model="searchSelected" :options="searchOptions"></b-form-select>
-      </b-col>
-      <b-col cols="8" md="10">
+<!--      <b-col cols="4" md="2">-->
+<!--        <b-form-select v-model="searchSelected" :options="searchOptions"></b-form-select>-->
+<!--      </b-col>-->
+      <b-col >
         <div style="display: flex">
-          <b-form-input v-on:keyup.enter="searchArticles" v-model="kw" placeholder="搜索小作文,按回车确定"></b-form-input>
+          <b-form-input v-on:keyup.enter="searchArticles" v-model="kw" placeholder="输入 标题/作者/正文 搜索小作文,按回车确定"></b-form-input>
           <p class="click-btn h3" style="align-self: center" @click="clearQuery">
             <b-icon-x name="clearBtn"></b-icon-x>
           </p>
@@ -56,13 +56,13 @@
     </b-row>
     <hr/>
     <b-row cols-xl="4" cols-lg="3" cols-md="2" cols-sm="1">
-      <div v-for="item in articles" :key="item._id">
+      <div v-for="item in articles" :key="item.id">
         <b-col>
           <ArticleCard class="article-card"
                        @handleAuthorClick="handleAuthorClick"
                        @handleTagClick="handleTagClick"
                        v-bind="item"
-                       :key="item._id"></ArticleCard>
+                       :key="item.id"></ArticleCard>
         </b-col>
       </div>
     </b-row>
@@ -97,16 +97,16 @@ export default {
       hasNext: true,
       kw: "",
       query: QueryParams.state,
-      pageNum: 0,
+      pageNum: 1, // 第一页下标页码为1
       pageSize: 36,
       isLoading: true,
       tagOptions: [],
       // search
-      searchSelected: null,
-      searchOptions: [
-        {value: 'title', text: '标题'},
-        {value: 'author', text: '作者'}
-      ]
+      searchSelected: null, // 怎么一删就搜索不了？
+      // searchOptions: [
+      //   {value: 'title', text: '标题'},
+      //   {value: 'author', text: '作者'}
+      // ]
     }
   },
   methods: {
@@ -118,11 +118,11 @@ export default {
         params.tags = params.tags.toString()
         queryArticles(params).then(res => {
           if (res.status == 200) {
-            this.hasNext = res.data.count == this.pageSize//是否还有更多
-            if (this.pageNum == 0) {
-              // 从头搜索
+            this.hasNext = res.data.articles.length == this.pageSize//是否还有更多
+            if (this.pageNum == 1) {
+              // 第一次搜索
               this.articles = res.data.articles
-            } else {
+            } else if (this.pageNum > 1) {
               // 获取更多
               this.articles.push.apply(this.articles, res.data.articles)
             }
@@ -139,20 +139,11 @@ export default {
     },
     searchArticles: function () {
       // 重新开始搜索
-      this.pageNum = 0
+      this.pageNum = 1
       this.hasNext = true
-      let w = this.kw.trim()
-      if (w) {
-        switch (this.searchSelected) {
-          case 'title':
-            QueryParams.setTitle(w)
-            QueryParams.setAuthor(null)
-            break
-          case 'author':
-            QueryParams.setAuthor(w)
-            QueryParams.setTitle(null)
-            break
-        }
+      let kw = this.kw.trim()
+      if (kw) {
+        QueryParams.setKw(kw)
       }
 
       this.fetchMoreArticles()
@@ -161,7 +152,7 @@ export default {
     fetchTagItems: function () {
       fetchTags().then(res => {
         if (res.status == 200) {
-          this.tagOptions = res.data.map((item) => {
+          this.tagOptions = res.data.tags.map(item => {
             return item.name
           })
         } else {
@@ -176,7 +167,7 @@ export default {
     handleTagClick: function (tag) {
       QueryParams.addTag(tag)
       document.body.scrollIntoView() // 滚到顶端
-      // this.searchArticles()
+      this.searchArticles()
     },
     /**
      * 子组件点击author，触发重新搜索
@@ -184,7 +175,7 @@ export default {
      */
     handleAuthorClick: function (author) {
       this.kw = author
-      this.searchSelected = 'author'
+      // this.searchSelected = 'author'
       document.body.scrollIntoView() // 滚到顶端
       this.searchArticles()
     },
@@ -199,10 +190,10 @@ export default {
       QueryParams.clear()
       this.searchArticles()
     },
-    changeQuery: function (mode, kw) {
-      this.kw = kw
-      this.searchSelected = mode
-    }
+    // changeQuery: function (mode, kw) {
+    //   this.kw = kw
+    //   this.searchSelected = mode
+    // }
 
   },
   computed: {
@@ -212,7 +203,7 @@ export default {
     }
   },
   mounted() {
-    this.searchSelected = this.searchOptions[0].value
+    // this.searchSelected = this.searchOptions[0].value
     // // 根据url查询参数筛选
     // let q = this.$route.query
     // if (q.author) {
