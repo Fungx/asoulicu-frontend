@@ -20,7 +20,7 @@
         <li>现在可以直接复制某篇小作文的链接啦</li>
         <li>上方可以选择“标题”，“作者”或“标签”，按回车搜索。其中标签搜索会返回匹配所有标签的作文</li>
         <li>点击小卡片上的作者或标签，也可以直接搜索</li>
-        <li>想要显示全部内容，可以<b>点击搜索栏旁边的X</b></li>
+        <li>想要显示全部内容，可以<b>点击搜索栏旁边的<b-icon-arrow-clockwise/></b></li>
         <li>点击小作文标题旁的
           <b-icon-file-earmark-text/>
           可以直接复制全文，点击下方“点击返回”可回到主页。移动端推荐直接用浏览器的返回，比较方便
@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import {BIconQuestionCircle, BIconFileEarmarkText} from 'bootstrap-vue'
+import {BIconQuestionCircle, BIconFileEarmarkText,BIconArrowClockwise} from 'bootstrap-vue'
 
 export default {
   name: "TheNavBar",
-  components: {BIconQuestionCircle, BIconFileEarmarkText}
+  components: {BIconQuestionCircle, BIconFileEarmarkText,BIconArrowClockwise}
 }
 </script>
 

@@ -1,14 +1,17 @@
 <template xmlns:v="http://www.w3.org/1999/xhtml">
   <b-container>
     <b-row>
-<!--      <b-col cols="4" md="2">-->
-<!--        <b-form-select v-model="searchSelected" :options="searchOptions"></b-form-select>-->
-<!--      </b-col>-->
-      <b-col >
+      <!--      <b-col cols="4" md="2">-->
+      <!--        <b-form-select v-model="searchSelected" :options="searchOptions"></b-form-select>-->
+      <!--      </b-col>-->
+      <b-col>
         <div style="display: flex">
-          <b-form-input v-on:keyup.enter="searchArticles" v-model="kw" placeholder="输入 标题/作者/正文 搜索小作文,按回车确定"></b-form-input>
+          <b-input-group>
+            <b-form-input v-on:keyup.enter="searchArticles" v-model="kw"
+                          placeholder="输入 标题/作者/正文 搜索小作文,按回车确定"></b-form-input>
+          </b-input-group>
           <p class="click-btn h3" style="align-self: center" @click="clearQuery">
-            <b-icon-x name="clearBtn"></b-icon-x>
+            <b-icon-arrow-clockwise  name="clearBtn"></b-icon-arrow-clockwise>
           </p>
         </div>
       </b-col>
@@ -84,12 +87,12 @@
 import ArticleCard from './ArticleCard.vue'
 import {queryArticles, fetchTags} from "@/api/api";
 import {QueryParams} from "../store.js";
-import {BIconX} from 'bootstrap-vue'
+import {BIconArrowClockwise} from 'bootstrap-vue'
 
 export default {
   name: 'TheArticleHome',
   components: {
-    ArticleCard, BIconX
+    ArticleCard, BIconArrowClockwise
   },
   data() {
     return {
@@ -141,11 +144,9 @@ export default {
       // 重新开始搜索
       this.pageNum = 1
       this.hasNext = true
-      let kw = this.kw.trim()
-      if (kw) {
-        QueryParams.setKw(kw)
-      }
-
+      if (this.kw)
+        this.kw = this.kw.trim()
+      QueryParams.setKw(this.kw)
       this.fetchMoreArticles()
     },
 
