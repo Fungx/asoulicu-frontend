@@ -1,3 +1,4 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 module.exports = {
     devServer: {
         hot: true,
@@ -10,5 +11,10 @@ module.exports = {
                 changeOrigin: true
             }
         }
+    },
+    configureWebpack: {
+        plugins: [
+            new BundleAnalyzerPlugin()
+        ]
     }
 }

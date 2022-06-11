@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve --report",
+    "build": "vue-cli-service build --report",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -17,6 +17,7 @@
     "vue-clipboard2": "^0.3.1",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.5.1",
+    "webpack-bundle-analyzer": "^4.5.0",
     "yarn": "^1.22.17"
   },
   "devDependencies": {

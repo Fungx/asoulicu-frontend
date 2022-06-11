@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const host = 'http://localhost:8088/v'
-// const host = 'https://asoul.icu/v'
+// const host = 'http://localhost:8088/v'
+const host = 'https://asoul.icu/v'
 
 
 

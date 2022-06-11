@@ -19,14 +19,11 @@ Vue.use(VueClipboard)
 Vue.config.productionTip = false
 
 // Router
-import TheEditor from "@/components/TheEditor";
-import TheArticlesHome from '@/components/TheArticlesHome'
-import TheArticle from "@/components/TheArticle";
 
 const routes = [
     {
         path: '/editor',
-        component: TheEditor,
+        component: () => import("@/components/TheEditor"), // 按需加载路由
         keepAlive: true
     },
     {
@@ -35,12 +32,12 @@ const routes = [
     },
     {
         path: '/articles',
-        component: TheArticlesHome,
+        component: () => import("@/components/TheArticlesHome"),
         keepAlive: true
     },
     {
         path: '/articles/:s',
-        component: TheArticle,
+        component: () => import("@/components/TheArticle"),
         keepAlive: true
     }]
 const router = new VueRouter({
