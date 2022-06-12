@@ -16,5 +16,36 @@ module.exports = {
         plugins: [
             new BundleAnalyzerPlugin()
         ]
+    },
+    chainWebpack: (config) => {
+        // prod
+        config.when(process.env.NODE_ENV === 'production', (config) => {
+            config.entry('app').clear().add('./src/main-prod.js')
+            // CDN - externals
+            config.set('externals', {
+                'vue': 'Vue',
+                'axios':'axios',
+                'vue-router': 'VueRouter',
+                // 'vue-quill-editor': 'VueQuillEditor',
+                'bootstrap-vue':'BootstrapVue',
+                'vue-clipboard2':'VueClipboard'
+            })
+            // 首页用isProd来控制html模版，是否加载cdn资源。
+            config.plugin('html').tap((args) => {
+                args[0].isProd = true
+                return args
+            })
+        })
+            // dev
+            config.when(process.env.NODE_ENV === 'development', (config) => {
+                // 开发模式加载 main-dev 入口文件
+                config.entry('app').clear().add('./src/main-dev.js')
+                // 首页自定义isProd
+                config.plugin('html').tap((args) => {
+                    args[0].isProd = false
+                    return args
+                })
+            })
+
     }
 }

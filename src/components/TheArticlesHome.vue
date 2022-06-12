@@ -87,12 +87,11 @@
 import ArticleCard from './ArticleCard.vue'
 import {queryArticles, fetchTags} from "@/api/api";
 import {QueryParams} from "../store.js";
-import {BIconArrowClockwise} from 'bootstrap-vue'
 
 export default {
   name: 'TheArticleHome',
   components: {
-    ArticleCard, BIconArrowClockwise
+    ArticleCard,
   },
   data() {
     return {

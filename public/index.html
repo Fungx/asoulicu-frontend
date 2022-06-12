@@ -5,7 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>logo.ico">
-    <title>小作文</title>
+    <title><%= htmlWebpackPlugin.options.isProd ?'':'dev-' %>小作文</title>
+
+    <% if(htmlWebpackPlugin.options.isProd) { %>
+        <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/bootstrap/4.6.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/bootstrap-vue/2.21.2/bootstrap-vue.min.css">
+        <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/bootstrap-vue/2.21.2/bootstrap-vue-icons.min.css">
+        <!-- Load Vue followed by BootstrapVue, and BootstrapVueIcons -->
+        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/2.6.11/vue.min.js"></script>
+        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/bootstrap-vue/2.21.2/bootstrap-vue.min.js"></script>
+        <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/bootstrap-vue/2.21.2/bootstrap-vue-icons.min.js"></script>
+        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.21.1/axios.min.js"></script>
+        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue-router/3.5.1/vue-router.min.js"></script>
+        <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue-clipboard2/0.3.1/vue-clipboard.min.js"></script>
+    <% } %>
 </head>
 <body>
 <noscript>

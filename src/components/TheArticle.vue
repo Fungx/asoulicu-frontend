@@ -46,11 +46,9 @@
 
 <script>
 import {fetchArticle} from "../api/api";
-import {BIconFileEarmarkText, BIconBoxArrowLeft} from "bootstrap-vue";
 
 export default {
   name: "TheArticle",
-  components: {BIconFileEarmarkText, BIconBoxArrowLeft},
   data() {
     return {
       article: null,

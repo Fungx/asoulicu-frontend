@@ -31,11 +31,10 @@
 </template>
 
 <script>
-import {BIconQuestionCircle, BIconFileEarmarkText,BIconArrowClockwise} from 'bootstrap-vue'
+// import {BIconQuestionCircle, BIconFileEarmarkText,BIconArrowClockwise} from 'bootstrap-vue'
 
 export default {
   name: "TheNavBar",
-  components: {BIconQuestionCircle, BIconFileEarmarkText,BIconArrowClockwise}
 }
 </script>
 

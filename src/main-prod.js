@@ -1,19 +1,20 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 import App from './App.vue'
-import axios from 'axios'
-import VueAxios from "vue-axios";
-import {BootstrapVue} from 'bootstrap-vue'
-import VueRouter from 'vue-router'
-import VueClipboard from "vue-clipboard2";
+// uses CDN
+// import axios from 'axios'
+// import {BootstrapVue} from 'bootstrap-vue'
+// import VueRouter from 'vue-router'
+// import VueClipboard from "vue-clipboard2";
+
 // Import Bootstrap an BootstrapVue CSS files (order is important)
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 Vue.use(VueRouter)
-Vue.use(VueAxios, axios)
 VueClipboard.config.autoSetContainer = true
 Vue.use(VueClipboard)
 Vue.config.productionTip = false
