@@ -1,18 +1,19 @@
 <template>
-  <div id="app">
+  <div id="app" >
     <TheNavBar></TheNavBar>
-    <div class="page-content">
+    <router-view class="mt-6" v-slot="{Component}">
       <transition name="fade">
         <keep-alive>
-          <router-view></router-view>
+          <component :is="Component"/>
         </keep-alive>
       </transition>
-    </div>
+    </router-view>
   </div>
 </template>
 
 <script>
-import TheNavBar from "@/components/TheNavBar";
+
+import TheNavBar from "./components/TheNavBar";
 
 export default {
   name: 'App',
@@ -30,31 +31,5 @@ export default {
   color: #2c3e50;
 }
 
-.page-content {
-  padding-top: 1em;
-  padding-bottom: 2em;
-}
-
-.nav-icon {
-  color: white;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .2s;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-{
-  opacity: 0;
-}
-
-.click-btn {
-  color: dimgray;
-  cursor: pointer;
-}
-
-.click-btn:hover {
-  color: #2c3e50;
-}
 
 </style>

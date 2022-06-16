@@ -26,8 +26,6 @@ module.exports = {
                 'vue': 'Vue',
                 'axios':'axios',
                 'vue-router': 'VueRouter',
-                // 'vue-quill-editor': 'VueQuillEditor',
-                'bootstrap-vue':'BootstrapVue',
                 'vue-clipboard2':'VueClipboard'
             })
             // 首页用isProd来控制html模版，是否加载cdn资源。

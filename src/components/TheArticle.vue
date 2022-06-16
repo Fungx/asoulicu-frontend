@@ -1,47 +1,29 @@
 <template>
-  <b-container>
-    <div v-if="article">
-      <b-row>
-        <b-col cols="9">
-          <h2><span>{{ article.title }}</span></h2>
-        </b-col>
-        <b-col cols="3" class="detail-toolbar">
-          <h2>
-            <BIconFileEarmarkText class="click-btn" @click="copyArticle" title="复制全文"></BIconFileEarmarkText>
-          </h2>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col>
-          <h5>{{ article.author }}</h5>
-        </b-col>
-      </b-row>
-      <hr/>
-      <b-row>
-        <b-col>
-          <div ref="htmlContent" v-html="article.htmlContent"></div>
-        </b-col>
-      </b-row>
-      <hr/>
-      <b-row>
-        <b-col>
-          <b-button size="lg" block variant="outline-secondary" @click="goBack">
-            <BIconBoxArrowLeft></BIconBoxArrowLeft>&nbsp;点击返回
-          </b-button>
+  <div class="container mb-20 text-base-content">
+    <div v-if="article" class="prose-lg text-justify">
+      <div class=" flex flex-row 	">
+        <div class="text-3xl self-center">{{ article.title }}</div>
+        <!-- document-duplicate -->
+        <button class="btn btn-ghost self-center ml-1 tooltip tooltip-primary	" data-tip="复制全文" @click="copyArticle">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor"
+               stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+          </svg>
+        </button>
+      </div>
+      <div>{{ article.author }}</div>
+      <div class="divider my-0"/>
+      <div ref="htmlContent" v-html="article.htmlContent"></div>
 
-        </b-col>
-      </b-row>
+      <div class="divider"></div>
+      <button class="btn btn-outline w-full btn-primary" @click="goBack">返&nbsp;回</button>
     </div>
     <div v-else>
-      Loading...
+      <p>loading...</p>
     </div>
-    <b-alert :show="dismissCountDown" variant="success" class="position-fixed fixed-bottom m-0 rounded-0" fade
-             style="z-index: 2000;"
-             @dismiss-count-down="countDownChanged"
-             dismissible>
-      {{ alterMessage }}
-    </b-alert>
-  </b-container>
+
+  </div>
 </template>
 
 <script>
@@ -82,11 +64,6 @@ export default {
      */
     copyArticle: function () {
       this.$copyText(this.$refs.htmlContent.innerText, this.$refs.htmlContent)
-          .then(() => {
-            this.showAlert(`已复制《${this.article.title}》`)
-          }, () => {
-            this.showAlert(`复制失败`)
-          })
     },
     /**
      * 返回上一页
@@ -99,35 +76,17 @@ export default {
       }
     },
 
-    /**
-     * 控制alter时间
-     * @param dismissCountDown 消失倒计时
-     */
-    countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown
-    },
-    showAlert(message) {
-      this.alterMessage = message
-      this.dismissCountDown = this.dismissSecs
-    },
+
   },
+
   beforeRouteEnter(to, from, next) {
     next(vm => {
+      vm.article = null
       vm.fetchTheArticle()
     })
   },
-  beforeRouteLeave(to, from, next) {
-    this.article = null
-    next()
-  }
-
-
 }
 </script>
 
 <style scoped>
-.detail-toolbar {
-  display: flex;
-  justify-content: flex-end;
-}
 </style>

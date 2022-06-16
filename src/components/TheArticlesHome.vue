@@ -1,92 +1,61 @@
 <template xmlns:v="http://www.w3.org/1999/xhtml">
-  <b-container>
-    <b-row>
-      <!--      <b-col cols="4" md="2">-->
-      <!--        <b-form-select v-model="searchSelected" :options="searchOptions"></b-form-select>-->
-      <!--      </b-col>-->
-      <b-col>
-        <div style="display: flex">
-          <b-input-group>
-            <b-form-input v-on:keyup.enter="searchArticles" v-model="kw"
-                          placeholder="输入 标题/作者/正文 搜索小作文,按回车确定"></b-form-input>
-          </b-input-group>
-          <p class="click-btn h3" style="align-self: center" @click="clearQuery">
-            <b-icon-arrow-clockwise  name="clearBtn"></b-icon-arrow-clockwise>
-          </p>
-        </div>
-      </b-col>
+  <div class="container mx-auto text-base-content">
+    <!--query input-->
+    <div class="block flex flex-row mb-2 ">
 
-    </b-row>
-    <b-row>
-      <b-col>
-        <!-- Prop `add-on-change` is needed to enable adding tags vie the `change` event -->
-        <b-form-tags
-            class="tags-block"
-            v-model="query.tags"
-            size="lg"
-            add-on-change
-            no-outer-focus
-        >
-          <template v-slot="{ tags, inputAttrs, inputHandlers, disabled, removeTag }">
-            <div>
-              <b-form-select
-                  v-bind="inputAttrs"
-                  v-on="inputHandlers"
-                  :disabled="disabled || availableTagOptions.length === 0"
-                  :options="availableTagOptions"
-              >
-                <template #first>
-                  <!-- This is required to prevent bugs with Safari -->
-                  <option disabled value="">选择标签 (在下一次搜索生效)</option>
-                </template>
-              </b-form-select>
-
-            </div>
-            <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
-              <li v-for="tag in tags" :key="tag" class="list-inline-item">
-                <b-form-tag
-                    class="tags-item"
-                    @remove="removeTag(tag)"
-                    :title="tag"
-                    :disabled="disabled"
-                >{{ tag }}
-                </b-form-tag>
-              </li>
-            </ul>
-          </template>
-        </b-form-tags>
-      </b-col>
-    </b-row>
-    <hr/>
-    <b-row cols-xl="4" cols-lg="3" cols-md="2" cols-sm="1">
-      <div v-for="item in articles" :key="item.id">
-        <b-col>
-          <ArticleCard class="article-card"
-                       @handleAuthorClick="handleAuthorClick"
-                       @handleTagClick="handleTagClick"
-                       v-bind="item"
-                       :key="item.id"></ArticleCard>
-        </b-col>
+      <!--tag select-->
+      <div class="dropdown">
+        <!--        <label tabindex="0" class="select select-sm w-full select-bordered">Tags</label>-->
+        <label tabindex="0" class="select select-sm w-full select-bordered "
+               onclick="this.parentElement.classList.toggle('dropdown-open');document.activeElement.blur()">Tags</label>
+        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-max">
+          <li v-for="tag in tagOptions" :key="`tag-${tag}`">
+            <label class="label cursor-pointer">
+              <label :for="`tag-${tag}`" class="label-text block-inline">{{ tag }}</label>
+              <input :id="`tag-${tag}`" type="checkbox" :value="tag" class="checkbox checkbox-xs checkbox-primary"
+                     v-model="query.tags"/>
+            </label>
+          </li>
+        </ul>
       </div>
-    </b-row>
-    <h3 v-if="articles.length==0">没有符合条件的结果</h3>
-    <hr>
-    <div>
-      <b-overlay :show="isLoading" rounded>
-        <b-button v-if="hasNext" :disabled="isLoading" size="lg" block variant="outline-secondary"
-                  @click="fetchMoreArticles">点击加载更多
-        </b-button>
-      </b-overlay>
+      <!--kw-->
+      <input type="text" placeholder="输入 标题/作者/正文 搜索小作文,按回车确定"
+             class="input input-sm w-full input-bordered flex-initial" v-model="kw"
+             v-on:keyup.enter="searchArticles"/>
+
+      <button class="btn btn-square btn-sm btn-ghost flex-none" @click="clearQuery();searchArticles()"
+              :class="{'animate-spin':isLoading}" name="clearBtn">
+        <!--refresh-->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+             stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+      </button>
     </div>
 
-  </b-container>
+    <!-- article cards -->
+    <div class="divider"/>
+    <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+      <ArticleCard v-for="item in articles" v-bind="item" :key="item.id"
+                   @handleAuthorClick="handleAuthorClick"
+                   @handleTagClick="handleTagClick"></ArticleCard>
+    </div>
+    <div class="text-center text-3xl" v-if="articles.length==0">没有符合条件的结果。</div>
+    <div v-else>
+      <button class="btn btn-outline w-full btn-primary my-6 self-center" :disabled="isLoading" :class="{loading:isLoading}" v-if="hasNext"
+              @click="fetchMoreArticles">
+        加载更多
+      </button>
+      <div v-else class="divider">已经没有了捏</div>
+    </div>
 
+  </div>
 </template>
 
 <script>
 import ArticleCard from './ArticleCard.vue'
 import {queryArticles, fetchTags} from "@/api/api";
-import {QueryParams} from "../store.js";
 
 export default {
   name: 'TheArticleHome',
@@ -98,17 +67,14 @@ export default {
       articles: [],
       hasNext: true,
       kw: "",
-      query: QueryParams.state,
+      query: {
+        kw: null,
+        tags: []
+      },
       pageNum: 1, // 第一页下标页码为1
-      pageSize: 36,
+      pageSize: 48,
       isLoading: true,
-      tagOptions: [],
-      // search
-      searchSelected: null, // 怎么一删就搜索不了？
-      // searchOptions: [
-      //   {value: 'title', text: '标题'},
-      //   {value: 'author', text: '作者'}
-      // ]
+      tagOptions: []
     }
   },
   methods: {
@@ -145,7 +111,7 @@ export default {
       this.hasNext = true
       if (this.kw)
         this.kw = this.kw.trim()
-      QueryParams.setKw(this.kw)
+      this.query.kw = this.kw
       this.fetchMoreArticles()
     },
 
@@ -165,7 +131,8 @@ export default {
      * @param tag
      */
     handleTagClick: function (tag) {
-      QueryParams.addTag(tag)
+      this.clearQuery()
+      this.query.tags.push(tag)
       document.body.scrollIntoView() // 滚到顶端
       this.searchArticles()
     },
@@ -175,7 +142,6 @@ export default {
      */
     handleAuthorClick: function (author) {
       this.kw = author
-      // this.searchSelected = 'author'
       document.body.scrollIntoView() // 滚到顶端
       this.searchArticles()
     },
@@ -183,64 +149,25 @@ export default {
      * 点击添加tag
      * */
     handleTagOptionClick: function (tag) {
-      QueryParams.addTag(tag)
+      this.query.tags.push(tag)
     },
+
     clearQuery: function () {
       this.kw = ''
-      QueryParams.clear()
-      this.searchArticles()
+      this.query = {
+        kw: null,
+        tags: []
+      }
+      // this.searchArticles()
     },
-    // changeQuery: function (mode, kw) {
-    //   this.kw = kw
-    //   this.searchSelected = mode
-    // }
 
   },
-  computed: {
-    availableTagOptions: function () {
-      // 过滤已选择的tag
-      return this.tagOptions.filter(opt => this.query.tags.indexOf(opt) == -1)
-    }
-  },
   mounted() {
-    // this.searchSelected = this.searchOptions[0].value
-    // // 根据url查询参数筛选
-    // let q = this.$route.query
-    // if (q.author) {
-    //   this.searchSelected='author'
-    //   this.kw=q.author
-    // }else if (q.title){
-    //   this.searchSelected='title'
-    //   this.kw=q.title
-    // }
     this.fetchTagItems()
     this.searchArticles()
   },
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.article-card {
-  padding-top: 1em;
-}
-
-.load-btn {
-  text-align: center;
-  width: max-content;
-}
-
-.flip-list-move {
-  transition: transform 1s;
-}
-
-.tags-block {
-  margin-top: 0.5em;
-  border: none;
-  padding: 0px;
-}
-
-.tags-item {
-  margin-top: 0.5em;
-}
 </style>
