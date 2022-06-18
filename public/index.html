@@ -8,6 +8,7 @@
     <title><%= htmlWebpackPlugin.options.isProd ?'':'dev-' %>小作文</title>
 
     <% if(htmlWebpackPlugin.options.isProd) { %>
+        <link rel="stylesheet" href="./tailwind.build.css">
         <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.1.0/vue.runtime.global.prod.min.js"></script>
         <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.21.1/axios.min.js"></script>
         <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue-router/4.0.13/vue-router.global.prod.min.js"></script>

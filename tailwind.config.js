@@ -15,10 +15,6 @@ module.exports = {
             }
         },
     },
-    purge: [
-        './src/**/*.html',
-        './src/**/*.vue'
-    ],
     plugins: [require('@tailwindcss/typography'), require('daisyui'), require('autoprefixer')],
     daisyui: {
         themes: ["cupcake","night"],
