@@ -1,12 +1,10 @@
 <template>
-  <div id="app" >
+  <div id="app">
     <TheNavBar></TheNavBar>
     <router-view class="mt-6" v-slot="{Component}">
-      <transition name="fade">
-        <keep-alive>
-          <component :is="Component"/>
-        </keep-alive>
-      </transition>
+      <keep-alive>
+        <component :is="Component"/>
+      </keep-alive>
     </router-view>
   </div>
 </template>
