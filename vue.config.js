@@ -20,7 +20,7 @@ module.exports = {
     chainWebpack: (config) => {
         // prod
         config.when(process.env.NODE_ENV === 'production', (config) => {
-            config.entry('app').clear().add('./src/main-prod.js')
+            config.entry('app').clear().add('./src/main.js')
             // CDN - externals
             config.set('externals', {
                 'vue': 'Vue',
@@ -36,8 +36,7 @@ module.exports = {
         })
             // dev
             config.when(process.env.NODE_ENV === 'development', (config) => {
-                // 开发模式加载 main-dev 入口文件
-                config.entry('app').clear().add('./src/main-dev.js')
+                config.entry('app').clear().add('./src/main.js')
                 // 首页自定义isProd
                 config.plugin('html').tap((args) => {
                     args[0].isProd = false
