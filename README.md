@@ -6,4 +6,4 @@
 如果你也有想分享的作文，欢迎大家使用jiaranicu@outlook.com投稿和联系，如果不愿意您的作品被收录也可以联系我删除。
 
 ## 网站地址
-https://asoul.icu
+~~https://asoul.icu~~ 已倒闭
